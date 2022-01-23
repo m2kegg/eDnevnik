@@ -18,4 +18,13 @@ public class DateBase extends SugarRecord {
         this.start = start;
         this.end = end;
     }
+
+    @Override
+    public String toString() {
+        return
+                "Дистанционно: " + (isDistant ? "да" : "нет") +
+                ", дата занятия: " + date + ' ' +
+                ", начало занятия: " + start + ' ' +
+                ", конец занятия: " + end + "\n";
+    }
 }
