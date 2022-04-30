@@ -10,6 +10,9 @@ import android.widget.EditText;
 import android.widget.RadioGroup;
 import android.widget.Toast;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class MainActivity extends AppCompatActivity {
     EditText login, password;
     @Override
@@ -20,6 +23,7 @@ public class MainActivity extends AppCompatActivity {
         password = findViewById(R.id.editTextTextPassword);
         RadioGroup radioGroup = findViewById(R.id.radioGroup);
         Button btn = findViewById(R.id.btn);
+        Button btn2 = findViewById(R.id.button3);
         btn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -35,12 +39,25 @@ public class MainActivity extends AppCompatActivity {
                 }
             }
         });
+        btn2.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(MainActivity.this, RegisterActivity.class);
+                startActivity(intent);
+            }
+        });
     }
     private boolean check(){
+        List<UsersDatabase> usersDB = UsersDatabase.find(UsersDatabase.class, "login = ? and pass = ?", login.getText().toString(), password.getText().toString());
+        if (usersDB.isEmpty()){
+            login.setError("This user does not exist");
+            return false;
+        }
         if (password.getText().length() < 8){
             password.setError("Enter the correct password");
             return false;
         }
+
         return true;
     }
 }

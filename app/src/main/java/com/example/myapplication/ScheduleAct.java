@@ -5,10 +5,14 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.text.method.ScrollingMovementMethod;
 import android.widget.CalendarView;
+import android.widget.ScrollView;
+import android.widget.TextView;
 
 import java.util.Calendar;
 import java.util.Date;
+import java.util.List;
 
 public class ScheduleAct extends AppCompatActivity {
 
@@ -22,9 +26,13 @@ public class ScheduleAct extends AppCompatActivity {
             @Override
             public void onSelectedDayChange(@NonNull CalendarView calendarView, int i, int i1, int i2) {
                 Intent intent = new Intent(ScheduleAct.this, CreateLessonActivity.class);
-                intent.putExtra("date", i2+"."+i1+"."+i);
+                intent.putExtra("date", i2+"."+(i1 + 1)+"."+i);
                 startActivity(intent);
             }
         });
+        TextView textView = findViewById(R.id.textView8);
+        textView.setMovementMethod(new ScrollingMovementMethod());
+        List<DateBase> dates = DateBase.listAll(DateBase.class);
+        textView.setText(dates.toString().replace("[" , "").replace("]", ""));
     }
 }

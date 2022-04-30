@@ -4,7 +4,7 @@ import com.orm.SugarRecord;
 
 public class DateBase extends SugarRecord {
 
-    Boolean isDistant;
+    int isDistant;
     String date;
     String start;
     String end;
@@ -12,10 +12,19 @@ public class DateBase extends SugarRecord {
     public DateBase() {
     }
 
-    public DateBase(Boolean isDistant, String date, String start, String end) {
+    public DateBase(int isDistant, String date, String start, String end) {
         this.isDistant = isDistant;
         this.date = date;
         this.start = start;
         this.end = end;
+    }
+
+    @Override
+    public String toString() {
+        return
+                "Дистанционно: " + (isDistant == 1 ? "да" : "нет") +
+                ", дата занятия: " + date + ' ' +
+                ", начало занятия: " + start + ' ' +
+                ", конец занятия: " + end + "\n";
     }
 }

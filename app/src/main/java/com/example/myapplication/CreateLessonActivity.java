@@ -6,6 +6,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
+import android.widget.CompoundButton;
 import android.widget.EditText;
 import android.widget.Switch;
 
@@ -13,6 +14,7 @@ public class CreateLessonActivity extends AppCompatActivity {
     EditText etStart, etEnd, etDate;
     Button btn;
     Switch aSwitch;
+    int switched;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -21,8 +23,19 @@ public class CreateLessonActivity extends AppCompatActivity {
         String ChDate = args.get("date").toString();
         init();
         etDate.setText(ChDate);
+        aSwitch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                if (isChecked){
+                    switched = 1;
+                }
+                else {
+                    switched = 0;
+                }
+            }
+        });
         btn.setOnClickListener(view -> {
-            DateBase db = new DateBase(aSwitch.isActivated(), ChDate, etStart.getText().toString(), etEnd.getText().toString());
+            DateBase db = new DateBase(switched, ChDate, etStart.getText().toString(), etEnd.getText().toString());
             db.save();
             Intent intent = new Intent(CreateLessonActivity.this, ScheduleAct.class);
             startActivity(intent);
