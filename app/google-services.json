@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "995440145514",
+    "firebase_url": "https://ednevnik-9d263-default-rtdb.europe-west1.firebasedatabase.app",
+    "project_id": "ednevnik-9d263",
+    "storage_bucket": "ednevnik-9d263.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:995440145514:android:a37fd84753aa63d28b0613",
+        "android_client_info": {
+          "package_name": "com.example.myapplication"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "995440145514-ue35qe2fchrh3gk247vffnu0460pnr3t.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyATa6895O1Mm0Fy-e6MOgwiphnycRxQRig"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "995440145514-ue35qe2fchrh3gk247vffnu0460pnr3t.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

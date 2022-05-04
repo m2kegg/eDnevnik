@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:showIn="navigation_view">
+
+    <group android:checkableBehavior="single">
+        <item
+            android:id="@+id/nav_home"
+            android:title="Все занятия" />
+        <item
+            android:id="@+id/nav_addLesson"
+            android:title="Добавить новое занятие" />
+        <item
+            android:id="@+id/nav_tasks"
+            android:title="Домашние задания" />
+        <item
+            android:id="@+id/nav_addTask"
+            android:title="Добавить новое ДЗ" />
+        <item
+            android:id="@+id/nav_navigation"
+            android:title="Как добраться" />
+        <item
+            android:id="@+id/nav_createGroup"
+            android:title="Создать группу" />
+        <item
+            android:id="@+id/nav_addUsersToGroup"
+            android:title="Добавить пользователей в группу" />
+        <item
+            android:id="@+id/nav_quit"
+            android:title="Выйти" />
+    </group>
+</menu>

@@ -1,4 +1,4 @@
-package com.example.myapplication;
+package com.example.ednevnik;
 
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -10,20 +10,30 @@ import android.widget.EditText;
 import android.widget.RadioGroup;
 import android.widget.Toast;
 
-import java.util.ArrayList;
-import java.util.List;
+import com.google.firebase.auth.FirebaseAuth;
 
 public class MainActivity extends AppCompatActivity {
-    EditText login, password;
+    EditText email, password;
+    FirebaseAuth auth;
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+        if (auth.getCurrentUser() != null){
+            //заход в приложение
+        }
+    }
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        login = findViewById(R.id.editTextTextPersonName);
+        email = findViewById(R.id.editTextTextPersonName);
         password = findViewById(R.id.editTextTextPassword);
         RadioGroup radioGroup = findViewById(R.id.radioGroup);
         Button btn = findViewById(R.id.btn);
         Button btn2 = findViewById(R.id.button3);
+        auth = FirebaseAuth.getInstance();
         btn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -33,7 +43,8 @@ public class MainActivity extends AppCompatActivity {
                             Toast.makeText(getApplicationContext(), "WIP", Toast.LENGTH_LONG).show();
                             break;
                         case R.id.radioButton3:
-                            Intent intent = new Intent(MainActivity.this, ScheduleAct.class);
+                            auth.signInWithEmailAndPassword(email.getText().toString(), password.getText().toString());
+                            Intent intent = new Intent(MainActivity.this, ScheduleAct2.class);
                             startActivity(intent);
                     }
                 }
@@ -48,11 +59,6 @@ public class MainActivity extends AppCompatActivity {
         });
     }
     private boolean check(){
-        List<UsersDatabase> usersDB = UsersDatabase.find(UsersDatabase.class, "login = ? and pass = ?", login.getText().toString(), password.getText().toString());
-        if (usersDB.isEmpty()){
-            login.setError("This user does not exist");
-            return false;
-        }
         if (password.getText().length() < 8){
             password.setError("Enter the correct password");
             return false;

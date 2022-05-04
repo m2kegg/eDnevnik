@@ -1,10 +1,9 @@
-package com.example.myapplication;
+package com.example.ednevnik;
 
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.view.View;
 import android.widget.Button;
 import android.widget.CompoundButton;
 import android.widget.EditText;
@@ -35,10 +34,6 @@ public class CreateLessonActivity extends AppCompatActivity {
             }
         });
         btn.setOnClickListener(view -> {
-            DateBase db = new DateBase(switched, ChDate, etStart.getText().toString(), etEnd.getText().toString());
-            db.save();
-            Intent intent = new Intent(CreateLessonActivity.this, ScheduleAct.class);
-            startActivity(intent);
         });
     }
     void init(){

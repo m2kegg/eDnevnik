@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/mobile_navigation"
+    app:startDestination="@+id/nav_home">
+
+    <fragment
+        android:id="@+id/nav_home"
+        android:name="com.example.ednevnik.ui.home.HomeFragment"
+        android:label="@string/menu_home"
+        tools:layout="@layout/fragment_home" />
+
+    <fragment
+        android:id="@+id/nav_tasks"
+        android:name="com.example.ednevnik.ui.tasks.TasksFragment"
+        android:label="Tasks"
+        tools:layout="@layout/fragment_tasks" />
+
+    <fragment
+        android:id="@+id/nav_navigation"
+        android:name="com.example.ednevnik.ui.navigation.NavigationFragment"
+        android:label="Navigation"
+        tools:layout="@layout/fragment_navigation" />
+    <fragment
+        android:id="@+id/nav_addTask"
+        android:name="com.example.ednevnik.ui.navigation.NavigationFragment"
+        android:label="Add task"
+        tools:layout="@layout/fragment_add_task" />
+    <fragment
+        android:id="@+id/nav_addLesson"
+        android:name="com.example.ednevnik.ui.navigation.NavigationFragment"
+        android:label="Add lesson"
+        tools:layout="@layout/fragment_add_lesson" />
+    <fragment
+        android:id="@+id/nav_addUsersToGroup"
+        android:name="com.example.ednevnik.ui.navigation.NavigationFragment"
+        android:label="Add users to group"
+        tools:layout="@layout/fragment_add_users_to_group" />
+    <fragment
+        android:id="@+id/nav_createGroup"
+        android:name="com.example.ednevnik.ui.navigation.NavigationFragment"
+        android:label="Create group"
+        tools:layout="@layout/fragment_create_group" />
+    <fragment
+        android:id="@+id/nav_quit"
+        android:name="com.example.ednevnik.ui.navigation.NavigationFragment"
+        android:label="Quit"
+        tools:layout="@layout/fragment_quit" />
+</navigation>
