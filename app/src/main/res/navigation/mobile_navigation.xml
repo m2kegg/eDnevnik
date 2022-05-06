@@ -3,7 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/mobile_navigation"
-    app:startDestination="@+id/nav_home">
+    app:startDestination="@+id/nav_createGroup">
 
     <fragment
         android:id="@+id/nav_home"
@@ -24,27 +24,27 @@
         tools:layout="@layout/fragment_navigation" />
     <fragment
         android:id="@+id/nav_addTask"
-        android:name="com.example.ednevnik.ui.navigation.NavigationFragment"
+        android:name="com.example.ednevnik.ui.addTask.AddTaskFragment"
         android:label="Add task"
         tools:layout="@layout/fragment_add_task" />
     <fragment
         android:id="@+id/nav_addLesson"
-        android:name="com.example.ednevnik.ui.navigation.NavigationFragment"
+        android:name="com.example.ednevnik.ui.addLesson.AddLessonFragment"
         android:label="Add lesson"
         tools:layout="@layout/fragment_add_lesson" />
     <fragment
         android:id="@+id/nav_addUsersToGroup"
-        android:name="com.example.ednevnik.ui.navigation.NavigationFragment"
+        android:name="com.example.ednevnik.ui.addUsersToGroup.AddUsersToGroupFragment"
         android:label="Add users to group"
         tools:layout="@layout/fragment_add_users_to_group" />
     <fragment
         android:id="@+id/nav_createGroup"
-        android:name="com.example.ednevnik.ui.navigation.NavigationFragment"
+        android:name="com.example.ednevnik.ui.createGroup.CreateGroupFragment"
         android:label="Create group"
         tools:layout="@layout/fragment_create_group" />
     <fragment
         android:id="@+id/nav_quit"
-        android:name="com.example.ednevnik.ui.navigation.NavigationFragment"
+        android:name="com.example.ednevnik.ui.quit.QuitFragment"
         android:label="Quit"
         tools:layout="@layout/fragment_quit" />
 </navigation>

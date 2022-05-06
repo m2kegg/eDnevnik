@@ -8,12 +8,12 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class User {
     public String email, login, pass;
     public boolean isTeacher;
-    public List<Group> groups;
 
     public User() {
     }
@@ -23,22 +23,6 @@ public class User {
         this.login = login;
         this.pass = pass;
         this.isTeacher = isTeacher;
-        this.groups = null;
     }
-    public static User getUserFromUid(String uid){
-        FirebaseAuth mAuth = FirebaseAuth.getInstance();
-        final User[] user = {new User()};
-        FirebaseDatabase.getInstance().getReference("Users").child(uid).addListenerForSingleValueEvent(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot snapshot) {
-                user[0] = snapshot.getValue(User.class);
-        }
 
-            @Override
-            public void onCancelled(@NonNull DatabaseError error) {
-
-            }
-        });
-        return user[0];
-    }
 }

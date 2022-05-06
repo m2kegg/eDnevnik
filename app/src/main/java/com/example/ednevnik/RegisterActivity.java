@@ -38,7 +38,7 @@ public class RegisterActivity extends AppCompatActivity {
                             addOnCompleteListener(new OnCompleteListener<AuthResult>() {
                                 @Override
                                 public void onComplete(@NonNull Task<AuthResult> task) {
-                                    pd.dismiss();
+
                                     if (task.isSuccessful()){
                                         switch (radioGroup.getCheckedRadioButtonId()){
                                             case R.id.teacher:
@@ -47,6 +47,7 @@ public class RegisterActivity extends AppCompatActivity {
                                                         addOnCompleteListener(new OnCompleteListener<Void>() {
                                                             @Override
                                                             public void onComplete(@NonNull Task<Void> task) {
+                                                                pd.dismiss();
                                                                 if (task.isSuccessful()){
                                                                     Intent intent = new Intent(RegisterActivity.this, MainActivity.class);
                                                                     startActivity(intent);
@@ -60,6 +61,7 @@ public class RegisterActivity extends AppCompatActivity {
                                                         addOnCompleteListener(new OnCompleteListener<Void>() {
                                                             @Override
                                                             public void onComplete(@NonNull Task<Void> task) {
+                                                                pd.dismiss();
                                                                 if (task.isSuccessful()){
                                                                     Intent intent = new Intent(RegisterActivity.this, MainActivity.class);
                                                                     startActivity(intent);
@@ -85,7 +87,7 @@ public class RegisterActivity extends AppCompatActivity {
         button = findViewById(R.id.button2);
         firebaseAuth = FirebaseAuth.getInstance();
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        pd = new ProgressDialog(getApplicationContext());
+        pd = new ProgressDialog(RegisterActivity.this);
         pd.setCancelable(false);
         pd.setTitle("Идёт регистрация");
         pd.setMessage("Пожалуйста, подождите");
