@@ -75,6 +75,6 @@ public class AddUsersToGroupFragment extends Fragment implements AddUsersToGroup
 
     @Override
     public void OnFinishChoose(ArrayList<User> users) {
-        FirebaseDatabase.getInstance().getReference("Groups")
+        FirebaseDatabase.getInstance().getReference("Groups");
     }
 }
