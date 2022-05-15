@@ -30,11 +30,6 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.installations.internal.FidListener;
 
-/**
- * A simple {@link Fragment} subclass.
- * Use the {@link CreateGroupFragment#newInstance} factory method to
- * create an instance of this fragment.
- */
 public class CreateGroupFragment extends Fragment {
 
     private static final String ARG_PARAM1 = "param1";
@@ -96,13 +91,10 @@ public class CreateGroupFragment extends Fragment {
                             }
                         });
                     }
-
                     @Override
                     public void onCancelled(@NonNull DatabaseError error) {
-
                     }
                 });
-
             }
         });
         return view;

@@ -24,5 +24,13 @@ public class User {
         this.pass = pass;
         this.isTeacher = isTeacher;
     }
+    public static String listToString(ArrayList<User> users){
+        StringBuilder str = new StringBuilder();
+        for (User user:
+             users) {
+            str.append(user.login);
+        }
+        return str.toString();
+    }
 
 }

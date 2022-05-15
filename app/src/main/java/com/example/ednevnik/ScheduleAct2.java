@@ -47,29 +47,28 @@ public class ScheduleAct2 extends AppCompatActivity {
         NavigationView navigationView = binding.navView;
         // Passing each menu ID as a set of Ids because each
         // menu should be considered as top level destinations.
-        /* FirebaseDatabase.getInstance().getReference().child("Users").child(mAuth.getCurrentUser().getUid()).addListenerForSingleValueEvent(new ValueEventListener() {
+         FirebaseDatabase.getInstance().getReference().child("Users").child(mAuth.getCurrentUser().getUid()).addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 User user = snapshot.getValue(User.class);
-                if (user.isTeacher){ */
+                if (user.isTeacher) {
                     mAppBarConfiguration = new AppBarConfiguration.Builder(
                             R.id.nav_home, R.id.nav_addLesson, R.id.nav_addTask, R.id.nav_createGroup, R.id.nav_addUsersToGroup, R.id.nav_tasks, R.id.nav_navigation, R.id.nav_quit)
                             .setOpenableLayout(drawer)
                             .build();
-                //}
-                /*else {
+                } else {
                     mAppBarConfiguration = new AppBarConfiguration.Builder(
                             R.id.nav_home, R.id.nav_tasks, R.id.nav_navigation, R.id.nav_quit)
                             .setOpenableLayout(drawer)
                             .build();
                 }
-            }*/
+            }
 
-           /* @Override
+            @Override
             public void onCancelled(@NonNull DatabaseError error) {
 
             }
-        }); */
+        });
 
         NavController navController = Navigation.findNavController(this, R.id.nav_host_fragment_content_schedule_act2);
         NavigationUI.setupActionBarWithNavController(this, navController, mAppBarConfiguration);
