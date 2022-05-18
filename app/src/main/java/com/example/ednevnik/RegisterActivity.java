@@ -42,7 +42,7 @@ public class RegisterActivity extends AppCompatActivity {
                                     if (task.isSuccessful()){
                                         switch (radioGroup.getCheckedRadioButtonId()){
                                             case R.id.teacher:
-                                                User user = new User(etEmail.getText().toString(), etLogin.getText().toString(), etPass.getText().toString(), true);
+                                                User user = new User(etEmail.getText().toString(), etLogin.getText().toString(), etPass.getText().toString(), true, FirebaseAuth.getInstance().getCurrentUser().getUid());
                                                 FirebaseDatabase.getInstance().getReference("Users").child(FirebaseAuth.getInstance().getCurrentUser().getUid()).setValue(user).
                                                         addOnCompleteListener(new OnCompleteListener<Void>() {
                                                             @Override
@@ -56,7 +56,7 @@ public class RegisterActivity extends AppCompatActivity {
                                                         });
                                                 break;
                                             case R.id.radioButton4:
-                                                User user1 = new User(etEmail.getText().toString(), etLogin.getText().toString(), etPass.getText().toString(), false);
+                                                User user1 = new User(etEmail.getText().toString(), etLogin.getText().toString(), etPass.getText().toString(), false, FirebaseAuth.getInstance().getCurrentUser().getUid());
                                                 FirebaseDatabase.getInstance().getReference("Users").child(FirebaseAuth.getInstance().getCurrentUser().getUid()).setValue(user1).
                                                         addOnCompleteListener(new OnCompleteListener<Void>() {
                                                             @Override

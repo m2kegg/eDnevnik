@@ -68,15 +68,11 @@ public class CreateGroupFragment extends Fragment {
         DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference();
         View view = inflater.inflate(R.layout.fragment_create_group, container, false);
         EditText textView = view.findViewById(R.id.editTextTextPersonName3);
-        String s = FirebaseAuth.getInstance().getCurrentUser().getUid();
-        Log.d("ID", s);
         Button button = view.findViewById(R.id.button5);
-
-
         button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                FirebaseDatabase.getInstance().getReference("Users").child(s).addListenerForSingleValueEvent(new ValueEventListener() {
+                FirebaseDatabase.getInstance().getReference("Users").child(FirebaseAuth.getInstance().getCurrentUser().getUid()).addListenerForSingleValueEvent(new ValueEventListener() {
                     @Override
                     public void onDataChange(@NonNull DataSnapshot snapshot) {
                         User user1 = snapshot.getValue(User.class);

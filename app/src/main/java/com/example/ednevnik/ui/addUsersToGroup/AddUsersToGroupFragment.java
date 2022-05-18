@@ -1,5 +1,7 @@
 package com.example.ednevnik.ui.addUsersToGroup;
 
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -9,7 +11,9 @@ import androidx.fragment.app.FragmentManager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.ListAdapter;
 import android.widget.SearchView;
 import android.widget.TextView;
 
@@ -60,7 +64,7 @@ public class AddUsersToGroupFragment extends Fragment implements AddUsersToGroup
             @Override
             public void onClick(View view) {
                 showUserChooseDialog();
-                studentTextView.setText(User.listToString(users1));
+
             }
         });
         send.setOnClickListener(new View.OnClickListener() {
@@ -74,10 +78,43 @@ public class AddUsersToGroupFragment extends Fragment implements AddUsersToGroup
     }
 
     private void showUserChooseDialog(){
-        FragmentManager fragmentManager = getParentFragmentManager();
-        AddUsersToGroupDialog addUsersToGroupDialog = AddUsersToGroupDialog.newInstance("XYZ");
-        addUsersToGroupDialog.setTargetFragment(AddUsersToGroupFragment.this, 300);
-        addUsersToGroupDialog.show(fragmentManager, null);
+        FirebaseDatabase.getInstance().getReference("Users").addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                for (DataSnapshot s:
+                     snapshot.getChildren()) {
+                    User user = s.getValue(User.class);
+                    if (!user.isTeacher)
+                    users1.add(user);
+                }
+                boolean[] checkedVariants = new boolean[users1.size()];
+                ArrayList<String> names = new ArrayList<>();
+                for (User user: users1){
+                    names.add(user.login);
+                }
+                AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+                builder.setTitle("Выберите учеников").setMultiChoiceItems((CharSequence[]) names.toArray(), null, new DialogInterface.OnMultiChoiceClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i, boolean b) {
+                        if (b){
+                            checkedVariants[i] = true;
+                        }
+                    }
+                }).setPositiveButton("Выбрать", null).show();
+                for (int i = 0; i < users1.size(); i++){
+                    if (!checkedVariants[i]){
+                        users1.remove(i);
+                    }
+                }
+                TextView studentTextView = getView().findViewById(R.id.chosenStudents);
+                studentTextView.setText(User.listToString(users1));
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        });
 
     }
     private void showGroupChooseDialog(){
