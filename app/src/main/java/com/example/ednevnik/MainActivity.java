@@ -15,6 +15,7 @@ import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnCanceledListener;
 import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.android.material.snackbar.Snackbar;
 import com.google.firebase.auth.AuthResult;
@@ -23,6 +24,9 @@ import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.QuerySnapshot;
 
 import java.util.ArrayList;
 
@@ -40,61 +44,45 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        FirebaseFirestore db = FirebaseFirestore.getInstance();
+        FirebaseAuth auth = FirebaseAuth.getInstance();
         setContentView(R.layout.activity_main);
         email = findViewById(R.id.editTextTextPersonName);
         password = findViewById(R.id.editTextTextPassword);
         Button btn = findViewById(R.id.btn);
         Button btn2 = findViewById(R.id.button3);
         RadioGroup radioGroup = findViewById(R.id.radioGroup);
-        btn.setOnClickListener(new View.OnClickListener() {
-                                   @Override
-                                   public void onClick(View view) {
-                                       if (check()) {
-                                           FirebaseDatabase.getInstance().getReference("Users").addValueEventListener(new ValueEventListener() {
-                                               @Override
-                                               public void onDataChange(@NonNull DataSnapshot snapshot) {
-                                                   ArrayList<User> users = new ArrayList<>();
-                                                   for (DataSnapshot s:
-                                                        snapshot.getChildren()) {
-                                                       User user = s.getValue(User.class);
-                                                       users.add(user);
-                                                   }
-                                                   for (int i = 0; i < users.size(); i++){
-                                                       if (users.get(i).email == email.getText().toString()){
-                                                           if (users.get(i).isTeacher){
-                                                               Intent intent = new Intent(MainActivity.this, ScheduleAct2.class);
-                                                               startActivity(intent);
-                                                           }
-                                                           else{
-                                                               Intent intent = new Intent(MainActivity.this, ScheduleAct3.class);
-                                                               startActivity(intent);
-                                                           }
-                                                       }
-                                                   }
-                                               }
-
-                                               @Override
-                                               public void onCancelled(@NonNull DatabaseError error) {
-
-                                               }
-                                           });
-                                       }
-                                   }
-                               });
-                btn2.setOnClickListener(new View.OnClickListener() {
+        btn2.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                auth.signInWithEmailAndPassword(email.getText().toString(), password.getText().toString()).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
                     @Override
-                    public void onClick(View v) {
-                        Intent intent = new Intent(MainActivity.this, RegisterActivity.class);
-                        startActivity(intent);
+                    public void onComplete(@NonNull Task<AuthResult> task) {
+                        if (task.isSuccessful()) {
+                            db.collection("Users").document(auth.getCurrentUser().getUid()).get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
+                                @Override
+                                public void onSuccess(DocumentSnapshot documentSnapshot) {
+                                    Log.i("REGG", "NOW");
+                                    User user = documentSnapshot.toObject(User.class);
+                                    Log.i("REGG", String.valueOf(user.isTeacher));
+                                    if (user.isTeacher) {
+                                        startActivity(new Intent(MainActivity.this, ScheduleAct2.class));
+                                    } else {
+                                        startActivity(new Intent(MainActivity.this, ScheduleAct3.class));
+                                    }
+                                }
+                            });
+                        }
                     }
                 });
             }
-
-            private boolean check() {
-                if (password.getText().length() < 8) {
-                    password.setError("Enter the correct password");
-                    return false;
-                }
-                return true;
+        });
+    }
+        private boolean check() {
+            if (password.getText().length() < 8) {
+                password.setError("Enter the correct password");
+                return false;
             }
+            return true;
         }
+    }
