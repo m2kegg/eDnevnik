@@ -30,6 +30,7 @@ public class User {
         for (User user:
              users) {
             str.append(user.login);
+            str.append("\n");
         }
         return str.toString();
     }

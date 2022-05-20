@@ -29,36 +29,6 @@ public class HomeViewModel extends ViewModel {
         mDatabase = FirebaseDatabase.getInstance().getReference();
         List<Lesson> lessonList = new ArrayList<>();
         final User[] users = new User[1];
-        FirebaseDatabase.getInstance().getReference("Users").child(FirebaseAuth.getInstance().getCurrentUser().getUid()).addListenerForSingleValueEvent(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot snapshot) {
-                User user = snapshot.getValue(User.class);
-                users[0] = user;
-            }
-
-            @Override
-            public void onCancelled(@NonNull DatabaseError error) {
-
-            }
-        });
-        mDatabase.addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot snapshot) {
-                for (DataSnapshot s:
-                     snapshot.getChildren()) {
-                    Lesson lesson = s.getValue(Lesson.class);
-                    assert lesson != null;
-                    if (lesson.group.admin.login == Objects.requireNonNull(FirebaseAuth.getInstance().getCurrentUser()).getEmail() || lesson.group.users.contains(users[0])){
-                        lessonList.add(lesson);
-                    }
-                }
-            }
-
-            @Override
-            public void onCancelled(@NonNull DatabaseError error) {
-
-            }
-        });
         if (lessonList != null) lessons.postValue(lessonList);
 
     }

@@ -13,6 +13,7 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.example.ednevnik.Group;
 import com.example.ednevnik.R;
@@ -28,6 +29,7 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.installations.internal.FidListener;
 
 public class CreateGroupFragment extends Fragment {
@@ -65,30 +67,19 @@ public class CreateGroupFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference();
         View view = inflater.inflate(R.layout.fragment_create_group, container, false);
         EditText textView = view.findViewById(R.id.editTextTextPersonName3);
         Button button = view.findViewById(R.id.button5);
         button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                FirebaseDatabase.getInstance().getReference("Users").child(FirebaseAuth.getInstance().getCurrentUser().getUid()).addListenerForSingleValueEvent(new ValueEventListener() {
+                Group group = new Group(textView.getText().toString(), FirebaseFirestore.getInstance().document("/Users/" + FirebaseAuth.getInstance().getCurrentUser().getUid()));
+                FirebaseFirestore.getInstance().collection("Groups").document(group.name).set(group).addOnCompleteListener(new OnCompleteListener<Void>() {
                     @Override
-                    public void onDataChange(@NonNull DataSnapshot snapshot) {
-                        User user1 = snapshot.getValue(User.class);
-                        String name = textView.getText().toString();
-                        Group group = new Group(name, user1);
-                        databaseReference.child("Groups").child(String.valueOf(group.hashCode())).setValue(group).addOnCompleteListener(new OnCompleteListener<Void>() {
-                            @Override
-                            public void onComplete(@NonNull Task<Void> task) {
-                                if (task.isSuccessful()){
-                                    Snackbar.make(view, "Группа успешно создана, можете добавлять в неё учеников в другой вкладке", BaseTransientBottomBar.LENGTH_LONG).show();
-                                }
-                            }
-                        });
-                    }
-                    @Override
-                    public void onCancelled(@NonNull DatabaseError error) {
+                    public void onComplete(@NonNull Task<Void> task) {
+                        if (task.isSuccessful()){
+                            Toast.makeText(getContext(), "Группа успешно создана", Toast.LENGTH_LONG).show();
+                        }
                     }
                 });
             }

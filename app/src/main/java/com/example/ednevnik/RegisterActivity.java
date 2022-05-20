@@ -85,19 +85,19 @@ public class RegisterActivity extends AppCompatActivity {
 
     boolean check(){
         if (etLogin.getText().toString().equals("")){
-            etLogin.setError("Enter name");
+            etLogin.setError("Введите имя");
             return false;
         }
         if (etEmail.getText().toString().equals("") || !Patterns.EMAIL_ADDRESS.matcher(etEmail.getText().toString()).matches()){
-            etEmail.setError("Enter correct email");
+            etEmail.setError("Введите правильно почту");
             return false;
         }
         if (etPass.getText().toString().length() < 8 || etPass.getText().toString().equals("")){
-            etPass.setError("Enter correct password");
+            etPass.setError("Введите пароль");
             return false;
         }
         if (!etPass.getText().toString().equals(etRepeat.getText().toString())){
-            etRepeat.setError("Passwords don't match");
+            etRepeat.setError("Пароли не совпадают");
             return false;
         }
         return true;
