@@ -7,6 +7,7 @@ import android.os.Bundle;
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -26,7 +27,10 @@ import com.google.firebase.firestore.QuerySnapshot;
 import org.threeten.bp.LocalDate;
 
 import java.sql.Time;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 
 
 public class AddLessonFragment extends Fragment {
@@ -63,7 +67,7 @@ public class AddLessonFragment extends Fragment {
                     n += 1;
                 }
                 AlertDialog.Builder builder1 = new AlertDialog.Builder(getActivity());
-                builder1.setTitle("Выберите группу").setSingleChoiceItems(names, 1, new DialogInterface.OnClickListener() {
+                builder1.setTitle("Выберите группу").setSingleChoiceItems(names, -1, new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialogInterface, int i) {
                         group1 = groups.get(i);
@@ -71,7 +75,7 @@ public class AddLessonFragment extends Fragment {
                 }).setPositiveButton("Выбрать", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialogInterface, int i) {
-                        TextView textView = getView().findViewById(R.id.chosenGroup);
+                        TextView textView = getView().findViewById(R.id.textView11);
                         textView.setText(group1.name);
                     }
                 }).create().show();
@@ -82,8 +86,35 @@ public class AddLessonFragment extends Fragment {
             public void onClick(View view) {
                 if (check()){
                     String date1 = date.getText().toString();
-                    LocalDate localDate = LocalDate.parse(date1);
-                    Lesson lesson = new Lesson(localDate, address.getText().toString(), Time.valueOf(start.getText().toString()), Time.valueOf(finish.getText().toString()), group1, theme.getText().toString() );
+                    SimpleDateFormat simpleDateFormat = new SimpleDateFormat("dd.MM.yyyy");
+                    SimpleDateFormat simpleDateFormat1 = new SimpleDateFormat("HH:mm");
+                    try {
+                        Date date = simpleDateFormat.parse(date1);
+                        Date start1 = simpleDateFormat1.parse(start.getText().toString());
+                        start1.setYear(date.getYear());
+                        start1.setMonth(date.getMonth());
+                        start1.setDate(date.getDate());
+
+                        Date finish1 = simpleDateFormat1.parse(finish.getText().toString());
+                        finish1.setYear(date.getYear());
+                        finish1.setMonth(date.getMonth());
+                        finish1.setDate(date.getDate());
+                        Lesson lesson = new Lesson(date, address.getText().toString(), start1, finish1, FirebaseFirestore.getInstance().collection("Groups").document(group1.name), theme.getText().toString());
+                        FirebaseFirestore.getInstance().collection("Lessons").document(lesson.theme).set(lesson).addOnCompleteListener(new OnCompleteListener<Void>() {
+                            @Override
+                            public void onComplete(@NonNull Task<Void> task) {
+                                if (!task.isSuccessful()){
+                                    Log.d("ERR", task.getException().toString());
+                                }
+                                else{
+                                    Log.i("LES", "SUCCESS");
+                                }
+                            }
+                        });
+                    } catch (ParseException e) {
+                        Log.i("ERR", e.toString());
+                    }
+
                 }
             }
 
