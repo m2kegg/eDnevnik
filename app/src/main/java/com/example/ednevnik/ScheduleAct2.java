@@ -1,5 +1,6 @@
 package com.example.ednevnik;
 
+import android.content.pm.ActivityInfo;
 import android.os.Bundle;
 import android.view.View;
 import android.view.Menu;
@@ -34,6 +35,7 @@ public class ScheduleAct2 extends AppCompatActivity {
 
         binding = ActivityScheduleAct2Binding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
+        this.setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
 
         setSupportActionBar(binding.appBarScheduleAct2.toolbar);
         binding.appBarScheduleAct2.fab.setOnClickListener(new View.OnClickListener() {
