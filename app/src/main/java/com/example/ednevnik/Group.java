@@ -2,6 +2,7 @@ package com.example.ednevnik;
 
 import com.google.firebase.firestore.DocumentReference;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class Group {
@@ -25,6 +26,14 @@ public class Group {
         this.name = name;
         this.admin = admin;
         this.users = null;
+    }
+    public List<String> usersToString(){
+        List<String> strings = new ArrayList<>();
+        for (DocumentReference ref:
+             users) {
+            strings.add(ref.getId());
+        }
+        return strings;
     }
 
     public Group() {

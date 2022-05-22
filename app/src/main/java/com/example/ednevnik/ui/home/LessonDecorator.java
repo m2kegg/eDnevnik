@@ -47,7 +47,7 @@ public class LessonDecorator implements DayViewDecorator {
                 Log.i("ADM1", group.admin.toString());
                 Log.i("ADM2", FirebaseFirestore.getInstance().collection("Users").document(FirebaseAuth.getInstance().getCurrentUser().getUid()).toString() );
                 DocumentReference reference = FirebaseFirestore.getInstance().collection("Users").document(FirebaseAuth.getInstance().getCurrentUser().getUid());
-                if(group.admin.getId().equals(reference.getId()) || group.users.contains(FirebaseFirestore.getInstance().collection("Users").document(FirebaseAuth.getInstance().getCurrentUser().getUid()))){
+                if(group.admin.getId().equals(reference.getId()) || group.usersToString().contains(FirebaseFirestore.getInstance().collection("Users").document(FirebaseAuth.getInstance().getCurrentUser().getUid()).getId())){
                     calendarDays.add(day);
                 }
             }

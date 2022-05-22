@@ -8,8 +8,8 @@
 
     <CalendarView
         android:id="@+id/calendarView"
-        android:layout_width="331dp"
-        android:layout_height="314dp"
+        android:layout_width="566dp"
+        android:layout_height="426dp"
         android:selectedWeekBackgroundColor="#ff0000"
         android:weekNumberColor="#0000ff"
         android:weekSeparatorLineColor="#00ff00"
