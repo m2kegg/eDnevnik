@@ -7,44 +7,47 @@
     android:layout_height="match_parent"
     tools:context=".ui.createGroup.CreateGroupFragment">
 
-    <EditText
-        android:id="@+id/editTextTextPersonName3"
-        android:layout_width="237dp"
-        android:layout_height="52dp"
-        android:ems="10"
-        android:hint="Название"
-        android:inputType="textPersonName"
-        android:minHeight="48dp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.751"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.29"
-        tools:ignore="SpeakableTextPresentCheck" />
-
     <TextView
         android:id="@+id/textView9"
-        android:layout_width="238dp"
-        android:layout_height="56dp"
-        android:layout_marginStart="40dp"
-        android:layout_marginEnd="276dp"
+        android:layout_width="wrap_content"
+        android:layout_height="61dp"
+        android:layout_marginStart="44dp"
         android:text="Название группы:"
         android:textSize="24sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.415"
+        app:layout_constraintHorizontal_bias="0.261"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.291" />
+        app:layout_constraintVertical_bias="0.337" />
+
+    <EditText
+        android:id="@+id/editTextTextPersonName3"
+        android:layout_width="200dp"
+        android:layout_height="49dp"
+        android:layout_marginStart="4dp"
+        android:layout_marginEnd="44dp"
+        android:ems="10"
+        android:hint="Название"
+        android:inputType="textPersonName"
+        android:minHeight="48dp"
+        android:textSize="24sp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toEndOf="@+id/textView9"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.331"
+        tools:ignore="SpeakableTextPresentCheck" />
 
     <Button
         android:id="@+id/button5"
         android:layout_width="320dp"
         android:layout_height="60dp"
-        android:layout_marginEnd="224dp"
-        android:layout_marginBottom="416dp"
         android:text="Создать"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent" />
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.621" />
 </androidx.constraintlayout.widget.ConstraintLayout>
