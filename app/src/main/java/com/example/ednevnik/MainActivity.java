@@ -94,7 +94,7 @@ public class MainActivity extends AppCompatActivity {
                                 });
                             } else {
                                 pd.dismiss();
-                                Toast.makeText(getApplicationContext(), "Что-то пошло не так. Причина: " + task.getException().toString(), Toast.LENGTH_LONG).show();
+                                Toast.makeText(getApplicationContext(), getString(R.string.errorMsg) + task.getException().toString(), Toast.LENGTH_LONG).show();
                             }
                         }
                     });

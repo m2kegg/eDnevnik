@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <TextView
+        android:id="@+id/lessonItem"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Урок:"
+        android:textSize="24sp" />
+
+    <TextView
+        android:id="@+id/dataItem"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Дата:"
+        android:textSize="24sp" />
+
+    <TextView
+        android:id="@+id/groupItem"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Группа"
+        android:textSize="24sp" />
+
+</LinearLayout>

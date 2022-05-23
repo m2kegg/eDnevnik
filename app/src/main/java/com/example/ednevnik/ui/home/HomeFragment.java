@@ -1,5 +1,6 @@
 package com.example.ednevnik.ui.home;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -15,6 +16,7 @@ import androidx.lifecycle.ViewModelProvider;
 
 import com.example.ednevnik.Group;
 import com.example.ednevnik.Lesson;
+import com.example.ednevnik.ScheduleAct3;
 import com.example.ednevnik.databinding.FragmentHomeBinding;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
@@ -23,7 +25,9 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
+import com.prolificinteractive.materialcalendarview.CalendarDay;
 import com.prolificinteractive.materialcalendarview.MaterialCalendarView;
+import com.prolificinteractive.materialcalendarview.OnDateSelectedListener;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -55,6 +59,14 @@ public class HomeFragment extends Fragment {
                     @Override
                     public void onChanged(List<Lesson> lessons) {
                         calendarView.addDecorator(new LessonDecorator(lessons, group));
+                        calendarView.setOnDateChangedListener(new OnDateSelectedListener() {
+                            @Override
+                            public void onDateSelected(@NonNull MaterialCalendarView widget, @NonNull CalendarDay date, boolean selected) {
+                                Intent intent = new Intent(getActivity().getBaseContext(), LessonView.class);
+                                intent.putExtra("day", date);
+                                startActivity(intent);
+                            }
+                        });
                     }
                 });
             }
