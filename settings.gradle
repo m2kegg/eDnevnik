@@ -4,6 +4,11 @@ dependencyResolutionManagement {
         google()
         mavenCentral()
         maven { url "https://jitpack.io" }
+        maven {
+
+            url 'https://maven.tomtom.com:8443/nexus/content/repositories/releases/'
+
+        }
         jcenter() // Warning: this repository is going to shut down soon
     }
 }

@@ -39,13 +39,7 @@ public class ScheduleAct3 extends AppCompatActivity {
         this.setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
 
         setSupportActionBar(binding.appBarScheduleAct3.toolbar);
-        binding.appBarScheduleAct3.fab.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                        .setAction("Action", null).show();
-            }
-        });
+
 
 
 
@@ -61,12 +55,6 @@ public class ScheduleAct3 extends AppCompatActivity {
 
     }
 
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.schedule_act3, menu);
-        return true;
-    }
 
     @Override
     public boolean onSupportNavigateUp() {
