@@ -82,9 +82,7 @@ public class MainActivity extends AppCompatActivity {
                                 db.collection("Users").document(auth.getCurrentUser().getUid()).get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
                                     @Override
                                     public void onSuccess(DocumentSnapshot documentSnapshot) {
-                                        Log.i("REGG", "NOW");
                                         User user = documentSnapshot.toObject(User.class);
-                                        Log.i("REGG", String.valueOf(user.isTeacher));
                                         if (user.isTeacher) {
                                             startActivity(new Intent(MainActivity.this, ScheduleAct2.class));
                                         } else {

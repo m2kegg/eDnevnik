@@ -90,7 +90,7 @@ public class AddUsersToGroupFragment extends Fragment {
                                 n += 1;
                             }
                             AlertDialog.Builder builder1 = new AlertDialog.Builder(getActivity());
-                            builder1.setTitle("Выберите группу").setSingleChoiceItems(names, 1, new DialogInterface.OnClickListener() {
+                            builder1.setTitle("Выберите группу").setSingleChoiceItems(names, -1, new DialogInterface.OnClickListener() {
                                 @Override
                                 public void onClick(DialogInterface dialogInterface, int i) {
                                     group1 = groups.get(i);

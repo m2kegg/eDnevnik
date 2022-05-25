@@ -28,6 +28,7 @@ public class Utils extends ContextWrapper{
     public NotificationCompat.Builder setNotification(String title, String body)
     {
         return new NotificationCompat.Builder(this, "notification")
+                .setSmallIcon(R.drawable.rotate_to_button_selector)
                 .setContentTitle(title)
                 .setContentText(body)
                 .setAutoCancel(true)

@@ -2,7 +2,9 @@ package com.example.ednevnik.ui.navigation;
 
 
 import android.Manifest;
+import android.app.AlertDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.location.Location;
 import android.os.Build;
 import android.os.Bundle;
@@ -16,6 +18,8 @@ import android.view.ViewGroup;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
+import android.widget.Button;
+import android.widget.RadioGroup;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -26,6 +30,7 @@ import androidx.fragment.app.Fragment;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 
+import com.example.ednevnik.Lesson;
 import com.example.ednevnik.R;
 import com.example.ednevnik.databinding.FragmentNavigationBinding;
 import com.google.android.gms.location.LocationRequest;
@@ -34,6 +39,7 @@ import com.tomtom.online.sdk.common.Result;
 import com.tomtom.online.sdk.common.location.LatLng;
 import com.tomtom.online.sdk.common.permission.AndroidPermissionChecker;
 import com.tomtom.online.sdk.common.permission.PermissionChecker;
+import com.tomtom.online.sdk.common.util.DateFormatter;
 import com.tomtom.online.sdk.data.reachablerange.ReachableRangeQuery;
 import com.tomtom.online.sdk.data.reachablerange.ReachableRangeResponse;
 import com.tomtom.online.sdk.location.FusedLocationSource;
@@ -79,6 +85,8 @@ import com.tomtom.online.sdk.search.data.fuzzy.FuzzySearchQueryBuilder;
 import com.tomtom.online.sdk.search.data.fuzzy.FuzzySearchResponse;
 import com.tomtom.online.sdk.search.data.fuzzy.FuzzySearchResult;
 
+import org.joda.time.DateTime;
+
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
@@ -91,18 +99,19 @@ import io.reactivex.observers.DisposableSingleObserver;
 import io.reactivex.schedulers.Schedulers;
 
 
-public class NavigationFragment extends Fragment implements LocationUpdateListener {
+public class NavigationFragment extends Fragment {
     private final Handler searchTimerHandler = new Handler();
     private Runnable searchRunnable;
     private FragmentNavigationBinding binding;
     private List<String> searchAutocompleteList = new ArrayList<>();
     private String search;
-    private LatLng curloc;
     private LatLng destination;
+    private HashMap<String, Object> address;
     private HashMap<String, LatLng> searchResultsMap = new HashMap<>();
     private SearchApi searchApi;
     private ArrayAdapter<String> searchAdapter;
     private LocationSource locationSource;
+    private ArrayList<HashMap<String, Object>> addresses = new ArrayList<>();
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
@@ -110,67 +119,161 @@ public class NavigationFragment extends Fragment implements LocationUpdateListen
 
         binding = FragmentNavigationBinding.inflate(inflater, container, false);
         View root = binding.getRoot();
-        searchApi = OnlineSearchApi.create(getContext(), "xPypePUiAnfK3EenqbBxGqeG4sLuF8Jm");
-        searchAdapter = new ArrayAdapter<String>(getContext(), android.R.layout.simple_dropdown_item_1line, searchAutocompleteList);
+        TextView txt = binding.textView24;
+        txt.setVisibility(View.INVISIBLE);
 
-        PermissionChecker permissionChecker = AndroidPermissionChecker.createLocationChecker(getContext());
-        if(permissionChecker.ifNotAllPermissionGranted()) {
-            ActivityCompat.requestPermissions(getActivity(), new String[]{Manifest.permission.ACCESS_COARSE_LOCATION,
-                    Manifest.permission.ACCESS_FINE_LOCATION}, 0);
-        }
-        locationSource = new FusedLocationSource(getContext(), LocationRequest.create());
-        locationSource.addLocationUpdateListener(this);
-
-        AutoCompleteTextView textView = binding.atvMainDepartureLocation;
-        textView.setAdapter(searchAdapter);
-        textView.addTextChangedListener(new TextWatcher() {
+        navigationViewModel.getText().observe(getViewLifecycleOwner(), new Observer<List<Lesson>>() {
             @Override
-            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+            public void onChanged(List<Lesson> lessons) {
+                for (Lesson le :
+                lessons) {
+                    addresses.add((HashMap<String, Object>) le.address);
+                }
 
-            }
+                Button button1 = binding.button7;
+                Button button2 = binding.button8;
+                RadioGroup radioGroup = binding.radioGroup;
 
-            @Override
-            public void onTextChanged(CharSequence s, int start, int before, int count) {
-                searchTimerHandler.removeCallbacks(searchRunnable);
-            }
+                button1.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        CharSequence[] names = new CharSequence[addresses.size()];
+                        int i = 0;
+                        for (HashMap<String, Object> addr:
+                             addresses) {
+                            names[i] = (CharSequence) addr.get("name");
+                            i += 1;
+                        }
+                        AlertDialog.Builder builder1 = new AlertDialog.Builder(getActivity());
+                        builder1.setTitle("Выберите адрес").setSingleChoiceItems(names, -1, new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialogInterface, int i) {
+                                address = addresses.get(i);
+                            }
+                        }).setPositiveButton("Выбрать", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialogInterface, int i) {
+                                TextView textView = getView().findViewById(R.id.textView22);
+                                textView.setText((CharSequence) address.get("name"));
+                            }
+                        }).create().show();
 
-            @RequiresApi(api = Build.VERSION_CODES.Q)
-            @Override
-            public void afterTextChanged(Editable s) {
-                if (s.length()>3)
-                searchRunnable = () -> searchAddress(s.toString(), textView);
-                searchAdapter.clear();
-                searchTimerHandler.postDelayed(searchRunnable, 600);
-            }
-        });
+                    }
+                });
+                searchApi = OnlineSearchApi.create(getContext(), "xPypePUiAnfK3EenqbBxGqeG4sLuF8Jm");
+                searchAdapter = new ArrayAdapter<String>(getContext(), android.R.layout.simple_dropdown_item_1line, searchAutocompleteList);
+
+                PermissionChecker permissionChecker = AndroidPermissionChecker.createLocationChecker(getContext());
+                if(permissionChecker.ifNotAllPermissionGranted()) {
+                    ActivityCompat.requestPermissions(getActivity(), new String[]{Manifest.permission.ACCESS_COARSE_LOCATION,
+                            Manifest.permission.ACCESS_FINE_LOCATION}, 0);
+                }
+                AutoCompleteTextView textView = binding.atvMainDepartureLocation;
+                textView.setAdapter(searchAdapter);
+                textView.addTextChangedListener(new TextWatcher() {
+                    @Override
+                    public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+                    }
+
+                    @Override
+                    public void onTextChanged(CharSequence s, int start, int before, int count) {
+                        searchTimerHandler.removeCallbacks(searchRunnable);
+                    }
+
+                    @RequiresApi(api = Build.VERSION_CODES.Q)
+                    @Override
+                    public void afterTextChanged(Editable s) {
+                        if (s.length()>3)
+                            searchRunnable = () -> searchAddress(s.toString(), textView);
+                        searchAdapter.clear();
+                        searchTimerHandler.postDelayed(searchRunnable, 600);
+                    }
+                });
+                button2.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        RoutingApi routingApi = OnlineRoutingApi.create(getContext(), "xPypePUiAnfK3EenqbBxGqeG4sLuF8Jm");
+                        RouteDescriptor routeDescriptor;
+                        RouteCalculationDescriptor routeCalculationDescriptor;
+                        RouteSpecification routeSpecification;
+                        switch (radioGroup.getCheckedRadioButtonId()){
+                            case R.id.radioButton3:
+                                routeDescriptor = new RouteDescriptor.Builder().routeType(RouteType.FASTEST).considerTraffic(true).travelMode(TravelMode.CAR).departAt(new Date()).build();
+                                routeCalculationDescriptor = new RouteCalculationDescriptor.Builder().routeDescription(routeDescriptor).reportType(ReportType.EFFECTIVE_SETTINGS).instructionType(InstructionsType.TEXT).build();
+                                routeSpecification = new RouteSpecification.Builder(destination, new LatLng((Double) address.get("lat"), (Double) address.get("lng"))).routeCalculationDescriptor(routeCalculationDescriptor).build();
+
+
+                                routingApi.planRoute(routeSpecification, new RouteCallback() {
+                                    @Override
+                                    public void onSuccess(@NonNull RoutePlan routePlan) {
+                                        FullRoute fullRoute = routePlan.getRoutes().get(0);
+                                        DateFormatter dateFormatter = new DateFormatter();
+                                        DateTime dateTime = dateFormatter.formatWithTimeZone(fullRoute.getSummary().getArrivalTime());
+                                        txt.setVisibility(View.VISIBLE);
+                                        TextView textView1 = getView().findViewById(R.id.textView25);
+                                        textView1.setText(dateTime.plusHours(3).toString("HH:mm", Locale.getDefault()));
+
+                                    }
+
+                                    @Override
+                                    public void onError(@NonNull RoutingException e) {
+
+                                    }
+                                });
+                                break;
+                            case R.id.radioButton:
+                                routeDescriptor = new RouteDescriptor.Builder().routeType(RouteType.FASTEST).considerTraffic(true).travelMode(TravelMode.BUS).departAt(new Date()).build();
+                                routeCalculationDescriptor = new RouteCalculationDescriptor.Builder().routeDescription(routeDescriptor).reportType(ReportType.EFFECTIVE_SETTINGS).instructionType(InstructionsType.TEXT).build();
+                                routeSpecification = new RouteSpecification.Builder(destination, new LatLng((Double) address.get("lat"), (Double) address.get("lng"))).routeCalculationDescriptor(routeCalculationDescriptor).build();
 
 
 
+                                routingApi.planRoute(routeSpecification, new RouteCallback() {
+                                    @Override
+                                    public void onSuccess(@NonNull RoutePlan routePlan) {
+                                        FullRoute fullRoute = routePlan.getRoutes().get(0);
+                                        DateFormatter dateFormatter = new DateFormatter();
+                                        DateTime dateTime = dateFormatter.formatWithTimeZone(fullRoute.getSummary().getArrivalTime());
+                                        txt.setVisibility(View.VISIBLE);
+                                        TextView textView1 = getView().findViewById(R.id.textView25);
+                                        textView1.setText(dateTime.plusHours(3).toString("HH:mm", Locale.getDefault()));
+
+                                    }
+
+                                    @Override
+                                    public void onError(@NonNull RoutingException e) {
+
+                                    }
+                                });
+                            case R.id.radioButton2:
+                                routeDescriptor = new RouteDescriptor.Builder().routeType(RouteType.FASTEST).considerTraffic(true).travelMode(TravelMode.PEDESTRIAN).departAt(new Date()).build();
+                                routeCalculationDescriptor = new RouteCalculationDescriptor.Builder().routeDescription(routeDescriptor).reportType(ReportType.EFFECTIVE_SETTINGS).instructionType(InstructionsType.TEXT).build();
+                                routeSpecification = new RouteSpecification.Builder(destination, new LatLng((Double) address.get("lat"), (Double) address.get("lng"))).routeCalculationDescriptor(routeCalculationDescriptor).build();
+
+                                routingApi.planRoute(routeSpecification, new RouteCallback() {
+                                    @Override
+                                    public void onSuccess(@NonNull RoutePlan routePlan) {
+                                        FullRoute fullRoute = routePlan.getRoutes().get(0);
+                                        DateFormatter dateFormatter = new DateFormatter();
+                                        DateTime dateTime = dateFormatter.formatWithTimeZone(fullRoute.getSummary().getArrivalTime());
+                                        txt.setVisibility(View.VISIBLE);
+                                        TextView textView1 = getView().findViewById(R.id.textView25);
+                                        textView1.setText(dateTime.plusHours(3).toString("HH:mm", Locale.getDefault()));
+
+                                    }
+
+                                    @Override
+                                    public void onError(@NonNull RoutingException e) {
+
+                                    }
+                                });
+                        }
 
 
+                    }
+                });
 
-        RoutingApi routingApi = OnlineRoutingApi.create(getContext(), "xPypePUiAnfK3EenqbBxGqeG4sLuF8Jm");
-        RouteDescriptor routeDescriptor = new RouteDescriptor.Builder().routeType(RouteType.FASTEST).considerTraffic(true).travelMode(TravelMode.CAR).departAt(new Date()).build();
-        RouteCalculationDescriptor routeCalculationDescriptor = new RouteCalculationDescriptor.Builder().routeDescription(routeDescriptor).reportType(ReportType.EFFECTIVE_SETTINGS).instructionType(InstructionsType.TEXT).build();
-        RouteSpecification routeSpecification = new RouteSpecification.Builder(new LatLng(55.753544, 37.621211), new LatLng(55.743689, 37.681721)).routeCalculationDescriptor(routeCalculationDescriptor).build();
-
-        routingApi.planRoute(routeSpecification, new RouteCallback() {
-            @Override
-            public void onSuccess(@NonNull RoutePlan routePlan) {
-                FullRoute fullRoute = routePlan.getRoutes().get(0);
-                Log.i("ROUTEDEP", fullRoute.getSummary().getDepartureTime());
-                Log.i("ROUTEARR", fullRoute.getSummary().getArrivalTime());
-
-            }
-
-            @Override
-            public void onError(@NonNull RoutingException e) {
-
-            }
-        });
-        navigationViewModel.getText().observe(getViewLifecycleOwner(), new Observer<String>() {
-            @Override
-            public void onChanged(@Nullable String s) {
             }
         });
         return root;
@@ -212,22 +315,5 @@ public class NavigationFragment extends Fragment implements LocationUpdateListen
                     String item = (String) parent.getItemAtPosition(position);
                     destination = searchResultsMap.get(item);});
 
-    }
-
-    @Override
-    public void onLocationChanged(Location location) {
-        if (curloc == null) {
-            curloc = new LatLng(location);
-            locationSource.deactivate();
-        }
-    }
-
-    @Override
-    public void onResume() {
-        super.onResume();
-        PermissionChecker checker = AndroidPermissionChecker.createLocationChecker(getContext());
-        if(!checker.ifNotAllPermissionGranted()) {
-            locationSource.activate();
-        }
     }
 }

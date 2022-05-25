@@ -4,10 +4,12 @@ import com.google.firebase.firestore.DocumentReference;
 
 public class Hometask {
     public String task;
-    public DocumentReference lesson;
+    public DocumentReference group;
+    public Hometask(){
 
-    public Hometask(String task, DocumentReference lesson) {
+    }
+    public Hometask(String task, DocumentReference group) {
         this.task = task;
-        this.lesson = lesson;
+        this.group = group;
     }
 }
