@@ -1,4 +1,4 @@
-package com.example.ednevnik;
+package com.example.ednevnik.POJO;
 
 import com.google.firebase.firestore.DocumentReference;
 

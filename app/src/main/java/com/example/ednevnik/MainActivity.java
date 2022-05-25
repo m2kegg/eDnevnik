@@ -6,30 +6,19 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.RadioGroup;
-import android.widget.TextView;
 import android.widget.Toast;
 
-import com.google.android.gms.tasks.OnCanceledListener;
+import com.example.ednevnik.POJO.User;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
-import com.google.android.material.snackbar.Snackbar;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.database.DataSnapshot;
-import com.google.firebase.database.DatabaseError;
-import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
-import com.google.firebase.firestore.QuerySnapshot;
-
-import java.util.ArrayList;
 
 public class MainActivity extends AppCompatActivity {
     EditText email, password;
@@ -39,17 +28,12 @@ public class MainActivity extends AppCompatActivity {
     protected void onStart() {
         super.onStart();
         if (auth.getCurrentUser() != null){
-            FirebaseFirestore.getInstance().collection("Users").document(auth.getCurrentUser().getUid()).get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
-                @Override
-                public void onSuccess(DocumentSnapshot documentSnapshot) {
-                    Log.i("REGG", "NOW");
-                    User user = documentSnapshot.toObject(User.class);
-                    Log.i("REGG", String.valueOf(user.isTeacher));
-                    if (user.isTeacher) {
-                        startActivity(new Intent(MainActivity.this, ScheduleAct2.class));
-                    } else {
-                        startActivity(new Intent(MainActivity.this, ScheduleAct3.class));
-                    }
+            FirebaseFirestore.getInstance().collection("Users").document(auth.getCurrentUser().getUid()).get().addOnSuccessListener(documentSnapshot -> {
+                User user = documentSnapshot.toObject(User.class);
+                if (user.isTeacher) {
+                    startActivity(new Intent(MainActivity.this, ScheduleAct2.class));
+                } else {
+                    startActivity(new Intent(MainActivity.this, ScheduleAct3.class));
                 }
             });
         }
@@ -63,8 +47,8 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
         pd = new ProgressDialog(MainActivity.this);
         pd.setCancelable(false);
-        pd.setTitle("Идёт вход");
-        pd.setMessage("Пожалуйста, подождите");
+        pd.setTitle(getString(R.string.enter));
+        pd.setMessage(getString(R.string.wait));
         email = findViewById(R.id.editTextTextPersonName);
         password = findViewById(R.id.editTextTextPassword);
         Button btn = findViewById(R.id.btn);
@@ -102,15 +86,15 @@ public class MainActivity extends AppCompatActivity {
     }
         private boolean check() {
             if (password.getText().length() == 0){
-                password.setError("Введите пароль");
+                password.setError(getString(R.string.enter_pass));
                 return false;
             }
             if (password.getText().length() < 8) {
-                password.setError("Enter the correct password");
+                password.setError(getString(R.string.enter_correct));
                 return false;
             }
             if (email.getText().length() == 0){
-                email.setError("Введите почту");
+                email.setError(getString(R.string.enter_email));
                 return false;
             }
             return true;

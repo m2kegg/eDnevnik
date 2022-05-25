@@ -11,12 +11,25 @@
         android:text="Урок:"
         android:textSize="24sp" />
 
-    <TextView
-        android:id="@+id/dataItem"
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Дата:"
-        android:textSize="24sp" />
+        android:orientation="horizontal">
+
+        <TextView
+            android:id="@+id/dataItem"
+            android:layout_width="360dp"
+            android:layout_height="wrap_content"
+            android:text="Начало:"
+            android:textSize="24sp" />
+
+        <TextView
+            android:id="@+id/textView4"
+            android:layout_width="360dp"
+            android:layout_height="wrap_content"
+            android:text="Конец:"
+            android:textSize="24sp" />
+    </LinearLayout>
 
     <TextView
         android:id="@+id/groupItem"

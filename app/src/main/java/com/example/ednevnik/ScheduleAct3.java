@@ -2,14 +2,10 @@ package com.example.ednevnik;
 
 import android.content.pm.ActivityInfo;
 import android.os.Bundle;
-import android.view.View;
-import android.view.Menu;
 
 import com.example.ednevnik.databinding.ActivityScheduleAct3Binding;
-import com.google.android.material.snackbar.Snackbar;
 import com.google.android.material.navigation.NavigationView;
 
-import androidx.annotation.NonNull;
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
 import androidx.navigation.ui.AppBarConfiguration;
@@ -17,12 +13,7 @@ import androidx.navigation.ui.NavigationUI;
 import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.appcompat.app.AppCompatActivity;
 
-import com.example.ednevnik.databinding.ActivityScheduleAct2Binding;
 import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.database.DataSnapshot;
-import com.google.firebase.database.DatabaseError;
-import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.database.ValueEventListener;
 
 public class ScheduleAct3 extends AppCompatActivity {
 
@@ -37,7 +28,6 @@ public class ScheduleAct3 extends AppCompatActivity {
         binding = ActivityScheduleAct3Binding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
         this.setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
-
         setSupportActionBar(binding.appBarScheduleAct3.toolbar);
 
 

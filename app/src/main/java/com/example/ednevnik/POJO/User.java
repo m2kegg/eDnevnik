@@ -1,15 +1,8 @@
-package com.example.ednevnik;
+package com.example.ednevnik.POJO;
 
-import androidx.annotation.NonNull;
-
-import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.database.DataSnapshot;
-import com.google.firebase.database.DatabaseError;
-import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.database.ValueEventListener;
+import com.google.firebase.firestore.DocumentReference;
 
 import java.util.ArrayList;
-import java.util.List;
 
 public class User {
     public String email, login, pass, uid;

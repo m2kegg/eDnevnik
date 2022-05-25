@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">My Application</string>
+    <string name="app_name">eDnevnik</string>
     <string name="title_activity_schedule_act2">ScheduleAct2</string>
     <string name="navigation_drawer_open">Open navigation drawer</string>
     <string name="navigation_drawer_close">Close navigation drawer</string>
@@ -23,4 +23,36 @@
     <string name="hello_first_fragment">Hello first fragment</string>
     <string name="hello_second_fragment">Hello second fragment. Arg: %1$s</string>
     <string name="errorMsg">\"Что-то пошло не так. Причина: \"</string>
+    <string name="attention">Внимание!</string>
+    <string name="two_hours">Через два часа урок!</string>
+    <string name="notification_channel">notification</string>
+    <string name="timeline">timeline</string>
+    <string name="сhooseGroup">Выберите группу</string>
+    <string name="enter_theme">Пожалуйста, введите тему</string>
+    <string name="enter_start">Пожалуйста, введите время начала занятия</string>
+    <string name="enter_finish">Пожалуйста, введите окончания занятия</string>
+    <string name="enter_place">Пожалуйста, введите место занятия</string>
+    <string name="enter_date">Пожалуйста, введите дату занятия</string>
+    <string name="chooseGroups">Выберите группу</string>
+    <string name="success_task">Домашнее задание успешно добавлено</string>
+    <string name="lesson_success">Урок успешно добавлен!</string>
+    <string name="chose">Выберите группу</string>
+    <string name="choose_std">Выберите учеников</string>
+    <string name="enter_previous">Сначала заполните предыдущие поля</string>
+    <string name="success_users">Пользователи успешно добавлены в группу</string>
+    <string name="group_success">Группа успешно создана</string>
+    <string name="choose_address">Выберите адрес</string>
+    <string name="choose">Выбрать</string>
+    <string name="enter">Идёт вход</string>
+    <string name="apikey">xPypePUiAnfK3EenqbBxGqeG4sLuF8Jm</string>
+    <string name="enter_correct">Enter the correct password</string>
+    <string name="enter_email">Введите почту</string>
+    <string name="reg">Идёт регистрация</string>
+    <string name="wait">Пожалуйста, подождите</string>
+    <string name="name">Введите имя</string>
+    <string name="email_correct">Введите правильно почту</string>
+    <string name="enter_pass">Введите пароль</string>
+    <string name="_mismatch">Пароли не совпадают</string>
+    <string name="entertext">Введите текст</string>
+    <string name="dialog">Введите группу через диалог</string>
 </resources>

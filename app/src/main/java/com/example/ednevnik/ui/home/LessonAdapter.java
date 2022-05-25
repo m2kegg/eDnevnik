@@ -9,14 +9,12 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.example.ednevnik.Group;
-import com.example.ednevnik.Lesson;
+import com.example.ednevnik.POJO.Group;
+import com.example.ednevnik.POJO.Lesson;
 import com.example.ednevnik.R;
-import com.google.android.gms.tasks.OnSuccessListener;
-import com.google.firebase.firestore.DocumentSnapshot;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.HashMap;
 
 public class LessonAdapter extends RecyclerView.Adapter<LessonAdapter.ViewHolder> {
     private ArrayList<Lesson> lessons;
@@ -40,16 +38,14 @@ public class LessonAdapter extends RecyclerView.Adapter<LessonAdapter.ViewHolder
     public void onBindViewHolder(@NonNull LessonAdapter.ViewHolder holder, int position) {
         Lesson lesson = lessons.get(position);
         TextView leText = holder.lessonText;
-        TextView daText = holder.dataText;
+        TextView stText = holder.startText;
+        TextView enText = holder.endText;
         TextView grText = holder.groupText;
-        leText.setText(lesson.theme);
-        daText.setText(lesson.date.toString());
-        lesson.group.get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
-            @Override
-            public void onSuccess(DocumentSnapshot documentSnapshot) {
-                grText.setText(documentSnapshot.toObject(Group.class).name);
-            }
-        });
+        leText.setText("Тема: " + lesson.theme);
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("HH:mm");
+        stText.setText("Начало: " + simpleDateFormat.format(lesson.start));
+        enText.setText("Конец: " + simpleDateFormat.format(lesson.finish));
+        lesson.group.get().addOnSuccessListener(documentSnapshot -> grText.setText("Группа: " + documentSnapshot.toObject(Group.class).name));
     }
 
     @Override
@@ -58,11 +54,12 @@ public class LessonAdapter extends RecyclerView.Adapter<LessonAdapter.ViewHolder
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder {
-        public TextView lessonText, dataText, groupText;
+        public TextView lessonText, startText, endText, groupText;
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
             lessonText = itemView.findViewById(R.id.lessonItem);
-            dataText = itemView.findViewById(R.id.dataItem);
+            startText = itemView.findViewById(R.id.dataItem);
+            endText = itemView.findViewById(R.id.textView4);
             groupText = itemView.findViewById(R.id.groupItem);
         }
     }

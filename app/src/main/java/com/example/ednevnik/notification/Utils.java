@@ -27,7 +27,7 @@ public class Utils extends ContextWrapper{
 
     public NotificationCompat.Builder setNotification(String title, String body)
     {
-        return new NotificationCompat.Builder(this, "notification")
+        return new NotificationCompat.Builder(this, getString(R.string.notification_channel))
                 .setSmallIcon(R.drawable.rotate_to_button_selector)
                 .setContentTitle(title)
                 .setContentText(body)
@@ -39,7 +39,7 @@ public class Utils extends ContextWrapper{
     {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O)
         {
-            NotificationChannel channel = new NotificationChannel("notification", "timeline", NotificationManager.IMPORTANCE_DEFAULT);
+            NotificationChannel channel = new NotificationChannel(getString(R.string.notification_channel), getString(R.string.timeline), NotificationManager.IMPORTANCE_DEFAULT);
             channel.setLockscreenVisibility(Notification.VISIBILITY_PUBLIC);
             getManager().createNotificationChannel(channel);
         }

@@ -1,4 +1,4 @@
-package com.example.ednevnik;
+package com.example.ednevnik.POJO;
 
 import android.location.Address;
 import android.text.format.Time;

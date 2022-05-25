@@ -4,20 +4,18 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.app.ProgressDialog;
-import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
 import android.util.Patterns;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.RadioGroup;
 
+import com.example.ednevnik.POJO.User;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.firestore.FirebaseFirestore;
 
 public class RegisterActivity extends AppCompatActivity {
@@ -79,25 +77,25 @@ public class RegisterActivity extends AppCompatActivity {
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         pd = new ProgressDialog(RegisterActivity.this);
         pd.setCancelable(false);
-        pd.setTitle("Идёт регистрация");
-        pd.setMessage("Пожалуйста, подождите");
+        pd.setTitle(getString(R.string.reg));
+        pd.setMessage(getString(R.string.wait));
     }
 
     boolean check(){
         if (etLogin.getText().toString().equals("")){
-            etLogin.setError("Введите имя");
+            etLogin.setError(getString(R.string.name));
             return false;
         }
         if (etEmail.getText().toString().equals("") || !Patterns.EMAIL_ADDRESS.matcher(etEmail.getText().toString()).matches()){
-            etEmail.setError("Введите правильно почту");
+            etEmail.setError(getString(R.string.email_correct));
             return false;
         }
         if (etPass.getText().toString().length() < 8 || etPass.getText().toString().equals("")){
-            etPass.setError("Введите пароль");
+            etPass.setError(getString(R.string.enter_pass));
             return false;
         }
         if (!etPass.getText().toString().equals(etRepeat.getText().toString())){
-            etRepeat.setError("Пароли не совпадают");
+            etRepeat.setError(getString(R.string._mismatch));
             return false;
         }
         return true;

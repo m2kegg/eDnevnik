@@ -1,8 +1,9 @@
 package com.example.ednevnik.ui.addLesson;
 
+import static com.example.ednevnik.R.string.сhooseGroup;
+
 import android.Manifest;
 import android.app.AlertDialog;
-import android.content.DialogInterface;
 import android.os.Build;
 import android.os.Bundle;
 
@@ -23,11 +24,11 @@ import android.widget.AutoCompleteTextView;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
+import android.widget.Toast;
 
-import com.example.ednevnik.Group;
-import com.example.ednevnik.Lesson;
+import com.example.ednevnik.POJO.Group;
+import com.example.ednevnik.POJO.Lesson;
 import com.example.ednevnik.R;
-import com.google.android.gms.location.LocationRequest;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.firestore.FirebaseFirestore;
@@ -36,16 +37,12 @@ import com.google.firebase.firestore.QuerySnapshot;
 import com.tomtom.online.sdk.common.location.LatLng;
 import com.tomtom.online.sdk.common.permission.AndroidPermissionChecker;
 import com.tomtom.online.sdk.common.permission.PermissionChecker;
-import com.tomtom.online.sdk.location.FusedLocationSource;
 import com.tomtom.online.sdk.search.OnlineSearchApi;
 import com.tomtom.online.sdk.search.SearchApi;
 import com.tomtom.online.sdk.search.data.fuzzy.FuzzySearchQueryBuilder;
 import com.tomtom.online.sdk.search.data.fuzzy.FuzzySearchResponse;
 import com.tomtom.online.sdk.search.data.fuzzy.FuzzySearchResult;
 
-import org.threeten.bp.LocalDate;
-
-import java.sql.Time;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -93,7 +90,7 @@ public class AddLessonFragment extends Fragment {
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_add_lesson, container, false);
         init(view);
-        searchApi = OnlineSearchApi.create(getContext(), "xPypePUiAnfK3EenqbBxGqeG4sLuF8Jm");
+        searchApi = OnlineSearchApi.create(getContext(), getString(R.string.apikey));
         searchAdapter = new ArrayAdapter<String>(getContext(), android.R.layout.simple_dropdown_item_1line, searchAutocompleteList);
 
         PermissionChecker permissionChecker = AndroidPermissionChecker.createLocationChecker(getContext());
@@ -122,71 +119,53 @@ public class AddLessonFragment extends Fragment {
                 searchTimerHandler.postDelayed(searchRunnable, 600);
             }
         });
-        choose.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                CharSequence[] names = new CharSequence[groups.size()];
-                int n = 0;
-                for (Group group: groups){
-                    names[n] = group.name;
-                    n += 1;
-                }
-                AlertDialog.Builder builder1 = new AlertDialog.Builder(getActivity());
-                builder1.setTitle("Выберите группу").setSingleChoiceItems(names, -1, new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialogInterface, int i) {
-                        group1 = groups.get(i);
-                    }
-                }).setPositiveButton("Выбрать", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialogInterface, int i) {
-                        TextView textView = getView().findViewById(R.id.textView11);
-                        textView.setText(group1.name);
-                    }
-                }).create().show();
+        choose.setOnClickListener(view1 -> {
+            CharSequence[] names = new CharSequence[groups.size()];
+            int n = 0;
+            for (Group group: groups){
+                names[n] = group.name;
+                n += 1;
             }
+            AlertDialog.Builder builder1 = new AlertDialog.Builder(getActivity());
+            builder1.setTitle(сhooseGroup).setSingleChoiceItems(names, -1, (dialogInterface, i) -> group1 = groups.get(i)).setPositiveButton(R.string.choose, (dialogInterface, i) -> {
+                TextView textView = getView().findViewById(R.id.textView11);
+                textView.setText(group1.name);
+            }).create().show();
         });
-        add.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                if (check()){
-                    String date1 = date.getText().toString();
-                    SimpleDateFormat simpleDateFormat = new SimpleDateFormat("dd.MM.yyyy");
-                    SimpleDateFormat simpleDateFormat1 = new SimpleDateFormat("HH:mm");
-                    try {
-                        Date date = simpleDateFormat.parse(date1);
-                        Date start1 = simpleDateFormat1.parse(start.getText().toString());
-                        start1.setYear(date.getYear());
-                        start1.setMonth(date.getMonth());
-                        start1.setDate(date.getDate());
+        add.setOnClickListener(view12 -> {
+            if (check()){
+                String date1 = date.getText().toString();
+                SimpleDateFormat simpleDateFormat = new SimpleDateFormat("dd.MM.yyyy");
+                SimpleDateFormat simpleDateFormat1 = new SimpleDateFormat("HH:mm");
+                try {
+                    Date date = simpleDateFormat.parse(date1);
+                    Date start1 = simpleDateFormat1.parse(start.getText().toString());
+                    start1.setYear(date.getYear());
+                    start1.setMonth(date.getMonth());
+                    start1.setDate(date.getDate());
 
-                        Date finish1 = simpleDateFormat1.parse(finish.getText().toString());
-                        finish1.setYear(date.getYear());
-                        finish1.setMonth(date.getMonth());
-                        finish1.setDate(date.getDate());
-                        HashMap<String, Object> hashMap = new HashMap<>();
-                        hashMap.put("name", addressname);
-                        hashMap.put("lat", destination.getLatitude());
-                        hashMap.put("lng", destination.getLongitude());
-                        Lesson lesson = new Lesson(date, hashMap, start1, finish1, FirebaseFirestore.getInstance().collection("Groups").document(group1.name), theme.getText().toString());
-                        FirebaseFirestore.getInstance().collection("Lessons").document(lesson.theme).set(lesson).addOnCompleteListener(new OnCompleteListener<Void>() {
-                            @Override
-                            public void onComplete(@NonNull Task<Void> task) {
-                                if (!task.isSuccessful()){
-                                    Log.d("ERR", task.getException().toString());
-                                }
-                                else{
-                                    Log.i("LES", "SUCCESS");
-                                }
-                            }
-                        });
-                    } catch (ParseException e) {
-                        Log.i("ERR", e.toString());
-                    }
-
+                    Date finish1 = simpleDateFormat1.parse(finish.getText().toString());
+                    finish1.setYear(date.getYear());
+                    finish1.setMonth(date.getMonth());
+                    finish1.setDate(date.getDate());
+                    HashMap<String, Object> hashMap = new HashMap<>();
+                    hashMap.put("name", addressname);
+                    hashMap.put("lat", destination.getLatitude());
+                    hashMap.put("lng", destination.getLongitude());
+                    Lesson lesson = new Lesson(date, hashMap, start1, finish1, FirebaseFirestore.getInstance().collection("Groups").document(group1.name), theme.getText().toString());
+                    FirebaseFirestore.getInstance().collection("Lessons").document(lesson.theme).set(lesson).addOnCompleteListener(task -> {
+                        if (!task.isSuccessful()){
+                            Toast.makeText(getContext(), task.getException().getLocalizedMessage(), Toast.LENGTH_LONG).show();
+                        }
+                        else{
+                            Toast.makeText(getContext(), R.string.lesson_success, Toast.LENGTH_LONG).show();
+                        }
+                    });
+                } catch (ParseException e) {
+                    Log.i("ERR", e.toString());
                 }
-            }
 
+            }
         });
         return view;
     }
@@ -211,23 +190,23 @@ public class AddLessonFragment extends Fragment {
     }
     private boolean check(){
         if (theme.getText().toString().equals("")){
-            theme.setError("Пожалуйста, введите тему");
+            theme.setError(getString(R.string.enter_theme));
             return false;
         }
         if (start.getText().toString().equals("")){
-            theme.setError("Пожалуйста, введите время начала занятия");
+            theme.setError(getString(R.string.enter_start));
             return false;
         }
         if (finish.getText().toString().equals("")){
-            theme.setError("Пожалуйста, введите окончания занятия");
+            theme.setError(getString(R.string.enter_finish));
             return false;
         }
         if (address.getText().toString().equals("")){
-            theme.setError("Пожалуйста, введите место занятия");
+            theme.setError(getString(R.string.enter_place));
             return false;
         }
         if (date.getText().toString().equals("")){
-            theme.setError("Пожалуйста, введите дату занятия");
+            theme.setError(getString(R.string.enter_date));
             return false;
         }
         return true;
