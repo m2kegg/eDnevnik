@@ -83,6 +83,12 @@ public class MainActivity extends AppCompatActivity {
                 }
             }
         });
+        btn2.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivity(new Intent(MainActivity.this, RegisterActivity.class));
+            }
+        });
     }
         private boolean check() {
             if (password.getText().length() == 0){

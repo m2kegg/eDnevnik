@@ -85,11 +85,12 @@ public class AddTaskFragment extends Fragment {
     }
     private boolean check(){
         EditText task = getView().findViewById(R.id.editTextTextPersonName4);
+        TextView textView = getView().findViewById(R.id.textView14);
         if (task.getText().toString().equals("")){
             task.setError(getString(R.string.entertext));
             return false;
         }
-        if (group1 == null){
+        if (textView.getText().toString().equals("")){
             Toast.makeText(getContext(), R.string.dialog, Toast.LENGTH_LONG).show();
             return false;
         }

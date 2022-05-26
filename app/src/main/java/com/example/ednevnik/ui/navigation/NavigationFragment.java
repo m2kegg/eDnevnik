@@ -169,7 +169,7 @@ public class NavigationFragment extends Fragment {
                                 }
                             });
                             break;
-                        case R.id.radioButton:
+                        case R.id.radioButton1:
                             routeDescriptor = new RouteDescriptor.Builder().routeType(RouteType.FASTEST).considerTraffic(true).travelMode(TravelMode.BUS).departAt(new Date()).build();
                             routeCalculationDescriptor = new RouteCalculationDescriptor.Builder().routeDescription(routeDescriptor).reportType(ReportType.EFFECTIVE_SETTINGS).instructionType(InstructionsType.TEXT).build();
                             routeSpecification = new RouteSpecification.Builder(destination, new LatLng((Double) address.get("lat"), (Double) address.get("lng"))).routeCalculationDescriptor(routeCalculationDescriptor).build();
@@ -192,6 +192,7 @@ public class NavigationFragment extends Fragment {
 
                                 }
                             });
+                            break;
                         case R.id.radioButton2:
                             routeDescriptor = new RouteDescriptor.Builder().routeType(RouteType.FASTEST).considerTraffic(true).travelMode(TravelMode.PEDESTRIAN).departAt(new Date()).build();
                             routeCalculationDescriptor = new RouteCalculationDescriptor.Builder().routeDescription(routeDescriptor).reportType(ReportType.EFFECTIVE_SETTINGS).instructionType(InstructionsType.TEXT).build();

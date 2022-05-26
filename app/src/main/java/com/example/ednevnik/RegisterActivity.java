@@ -4,6 +4,7 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.app.ProgressDialog;
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Patterns;
 import android.view.View;
@@ -45,15 +46,19 @@ public class RegisterActivity extends AppCompatActivity {
                                         switch (radioGroup.getCheckedRadioButtonId()){
                                             case R.id.teacher:
                                                 User user = new User(etEmail.getText().toString(), etLogin.getText().toString(), etPass.getText().toString(), true, FirebaseAuth.getInstance().getCurrentUser().getUid());
-                                                db.collection("Users").document(FirebaseAuth.getInstance().getCurrentUser().getUid()).set(user);
+                                                db.collection("Users").document(FirebaseAuth.getInstance().getCurrentUser().getUid()).set(user).addOnCompleteListener(new OnCompleteListener<Void>() {
+                                                    @Override
+                                                    public void onComplete(@NonNull Task<Void> task) {
+                                                        startActivity(new Intent(RegisterActivity.this, ScheduleAct2.class));
+                                                    }
+                                                });
                                                 break;
                                             case R.id.radioButton4:
                                                 User user1 = new User(etEmail.getText().toString(), etLogin.getText().toString(), etPass.getText().toString(), false, FirebaseAuth.getInstance().getCurrentUser().getUid());
                                                 db.collection("Users").document(FirebaseAuth.getInstance().getCurrentUser().getUid()).set(user1).addOnCompleteListener(new OnCompleteListener<Void>() {
                                                     @Override
                                                     public void onComplete(@NonNull Task<Void> task) {
-
-
+                                                        startActivity(new Intent(RegisterActivity.this, ScheduleAct3.class));
                                                     }
                                                 });
                                                 break;

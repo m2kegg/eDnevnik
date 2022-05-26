@@ -10,6 +10,7 @@
         android:id="@+id/atv_main_departure_location"
         android:layout_width="292dp"
         android:layout_height="53dp"
+        android:hint="Транслит"
         android:imeOptions="actionSearch"
         android:inputType="textPersonName"
         android:textSize="24sp"
@@ -88,7 +89,7 @@
             android:textSize="24sp" />
 
         <RadioButton
-            android:id="@+id/radioButton"
+            android:id="@+id/radioButton1"
             android:layout_width="200dp"
             android:layout_height="match_parent"
             android:text="На ОТ"

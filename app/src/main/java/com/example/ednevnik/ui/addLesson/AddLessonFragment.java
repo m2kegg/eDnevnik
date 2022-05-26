@@ -159,6 +159,7 @@ public class AddLessonFragment extends Fragment {
                         }
                         else{
                             Toast.makeText(getContext(), R.string.lesson_success, Toast.LENGTH_LONG).show();
+                            getActivity().recreate();
                         }
                     });
                 } catch (ParseException e) {
