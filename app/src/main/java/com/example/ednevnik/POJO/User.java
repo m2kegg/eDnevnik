@@ -22,8 +22,10 @@ public class User {
         StringBuilder str = new StringBuilder();
         for (User user:
              users) {
-            str.append(user.login);
-            str.append("\n");
+            if(user != null) {
+                str.append(user.login);
+                str.append("\n");
+            }
         }
         return str.toString();
     }

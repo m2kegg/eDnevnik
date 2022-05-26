@@ -41,6 +41,7 @@ public class ScheduleAct3 extends AppCompatActivity {
         FirebaseFirestore.getInstance().collection("Lessons").get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
             @Override
             public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                binding = ActivityScheduleAct3Binding.inflate(getLayoutInflater());
                 long trigger = 1000000000000000000L;
                 for (QueryDocumentSnapshot s :
                         task.getResult()) {
@@ -57,8 +58,8 @@ public class ScheduleAct3 extends AppCompatActivity {
                 //if (user.isTeacher) {
                 NavigationView navigationView = binding.navView;
                 View hView = navigationView.getHeaderView(0);
-                TextView nav_user = hView.findViewById(R.id.user);
-                TextView nav_teacher = hView.findViewById(R.id.teacger);
+                TextView nav_user = hView.findViewById(R.id.user2);
+                TextView nav_teacher = hView.findViewById(R.id.teacger2);
                 FirebaseFirestore.getInstance().collection("Users").document(FirebaseAuth.getInstance().getCurrentUser().getUid()).get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
                     @Override
                     public void onComplete(@NonNull Task<DocumentSnapshot> task) {
@@ -67,7 +68,6 @@ public class ScheduleAct3 extends AppCompatActivity {
                         nav_teacher.setText(curuser.isTeacher ? "Учитель" : "Ученик");
                     }
                 });
-                binding = ActivityScheduleAct3Binding.inflate(getLayoutInflater());
                 setContentView(binding.getRoot());
                 setSupportActionBar(binding.appBarScheduleAct3.toolbar);
                 mAppBarConfiguration = new AppBarConfiguration.Builder(

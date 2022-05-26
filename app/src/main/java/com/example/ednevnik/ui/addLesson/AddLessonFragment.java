@@ -31,6 +31,8 @@ import com.example.ednevnik.POJO.Lesson;
 import com.example.ednevnik.R;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
@@ -184,7 +186,10 @@ public class AddLessonFragment extends Fragment {
                 for (QueryDocumentSnapshot s:
                         task.getResult()) {
                     Group group = s.toObject(Group.class);
-                    groups.add(group);
+                    DocumentReference reference = FirebaseFirestore.getInstance().collection("Users").document(FirebaseAuth.getInstance().getCurrentUser().getUid());
+                    if (group.admin.getId().equals(reference.getId()) || group.usersToString().contains(FirebaseFirestore.getInstance().collection("Users").document(FirebaseAuth.getInstance().getCurrentUser().getUid()).getId())) {
+                        groups.add(group);
+                    }
                 }
             }
         });

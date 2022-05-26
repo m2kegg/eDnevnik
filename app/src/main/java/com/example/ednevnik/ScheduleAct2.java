@@ -27,8 +27,6 @@ import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 
-import java.util.Date;
-
 public class ScheduleAct2 extends AppCompatActivity {
 
     private AppBarConfiguration mAppBarConfiguration;
@@ -97,8 +95,8 @@ public class ScheduleAct2 extends AppCompatActivity {
                 //if (user.isTeacher) {
                 NavigationView navigationView = binding.navView;
                 View hView = navigationView.getHeaderView(0);
-                TextView nav_user = hView.findViewById(R.id.user);
-                TextView nav_teacher = hView.findViewById(R.id.teacger);
+                TextView nav_user = hView.findViewById(R.id.user1);
+                TextView nav_teacher = hView.findViewById(R.id.teacger1);
                 FirebaseFirestore.getInstance().collection("Users").document(FirebaseAuth.getInstance().getCurrentUser().getUid()).get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
                     @Override
                     public void onComplete(@NonNull Task<DocumentSnapshot> task) {
